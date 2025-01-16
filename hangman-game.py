@@ -7,7 +7,7 @@ class Hangman:
         self.turn = 0
         self.playing = True
         self.words = []
-        self.current_word = []
+        self.current_word = ""
         self.failed_guesses = []
         self.correct_letters = []
         self.letters = string.ascii_lowercase[:26]
@@ -22,7 +22,7 @@ class Hangman:
             self.show_blanks()
 
             if len(self.failed_guesses) == 11:
-                print("\n\nGame over, you loose")
+                print("\n\nGame over, you lose")
                 self.playing = False
 
     # Method to get a random word from a list of words
@@ -56,11 +56,16 @@ class Hangman:
         while not made_guess:
             guess = input("\nEnter your guess: ")
             if guess.lower() in self.failed_guesses:
-                made_guess = True
-                self.turn += 1
-                if guess in self.current_word:
-                    self.correct_letters.append(guess)
-                    self.show_hang_man(len(self.failed_guesses))
+                print("Letter already chosen, choose again")
+            else:
+                if guess.lower() in self.letters:
+                    made_guess = True
+                    self.turn += 1
+                    if guess in self.current_word:
+                        self.correct_letters.append(guess)
+                    else:
+                        self.failed_guesses.append(guess)
+                        self.show_hang_man(len(self.failed_guesses))
 
     # Make a list containing a few words as a word bank
     def new_word_bank(self):
@@ -94,5 +99,3 @@ class Hangman:
 hangman_game = Hangman()
 hangman_game.new_word_bank()
 hangman_game.new_game()
-
-
